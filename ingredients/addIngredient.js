@@ -15,12 +15,17 @@ $(document).ready(function() {
                 alert("Ingredient successfully added!");
             }
         }).fail(function(res) {
+            console.log(res);
             if (res.status == 422) {
                 if (res.responseJSON.name) {
+                    console.log(res.responseJSON.name);
+                    console.log(res.name);
                     $("#nameErrorPlaceholder").text(res.responseJSON.name[0])
                         .addClass("alert alert-danger mt-1");
-                }
+                } 
                 if (res.responseJSON.description) {
+                    console.log(res.responseJSON.description);
+                    console.log(res.description);
                     $("#descriptionErrorPlaceholder").text(res.responseJSON.description)
                         .addClass("alert alert-danger mt-1");
                 }
@@ -36,7 +41,6 @@ $(document).ready(function() {
                     $("#imageErrorPlaceholder").text(res.responseJSON.image[0])
                         .addClass("alert alert-danger mt-1");
                 }
-                alert("Something went wrong!");
 
             }
 

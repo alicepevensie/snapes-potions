@@ -127,7 +127,7 @@ class IngredientRepository
     {
         $offset = $this->db->real_escape_string($offset);
         $ingredientsPerPage = $this->db->real_escape_string($ingredientsPerPage);
-        $sql = "SELECT * FROM ingredients ORDER BY `name` DESC LIMIT $offset, $ingredientsPerPage";
+        $sql = "SELECT * FROM ingredients ORDER BY `name` ASC LIMIT $offset, $ingredientsPerPage";
         $result = $this->db->query($sql);
         if ($result === false) {
             die($this->db->error);

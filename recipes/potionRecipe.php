@@ -113,8 +113,19 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
                                 <button type="button" class="btn btn-danger btn-sm" id="removeIngredientBtn">Remove last ingredient</button>
                             </div>
 
+                            <div id="instructionsWrapper">
+
+
+                            </div>
+                            <div id="instructions-control-btns" class="mt-2">
+                                <button type="button" class="btn btn-info btn-sm" id="addInstructionBtn">Add instruction</button>
+                                <button type="button" class="btn btn-danger btn-sm" id="removeInstructionBtn">Remove last instruction</button>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-success btn-sm mt-2">Save recipe</button>
+                            </div>
                         </form>
-                        
+
                     </div>
                 </div>
 
@@ -134,7 +145,7 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
                                 <tr>
                                     <th colspan="2"> <span>How many bottles of this potion would you like to make?</span>
                                         <input id="potionAmount" type="number" min="1" step="1">
-                                        <input type="hidden" id="potionName2" value="<?=$potionName?>">
+                                        <input type="hidden" id="potionName2" value="<?= $potionName ?>">
                                         <?php if ($user->getId() === 2) : ?>
                                             <button class="btn" id="addPotionsBtn">Store created potions</button>
                                         <?php endif; ?>

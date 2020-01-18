@@ -15,6 +15,7 @@ $service = new ChangeIngredientService($ingredientRep, $validator);
 $feedback = $service->storeIngredient($_POST, $_FILES);
 if($feedback['somethingWrong']){
     http_response_code(422);
+    header("Content-Type: application/json");
     echo json_encode($feedback);
     exit;
 }

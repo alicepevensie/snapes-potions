@@ -9,40 +9,40 @@ $(document).ready(function () {
             let ingAmount = $(this).find("td:eq(1)").text();
             let ingAmountCalc = ingAmount * potionAmount;
             data = {
-                ingName : ingName,
-                ingAmountCalc : ingAmountCalc,
+                ingName: ingName,
+                ingAmountCalc: ingAmountCalc,
             }
             let last = $(this).find("td:last");
-            $.post("../ingredients/checkIngredients.php", data, function(response){
+            $.post("../ingredients/checkIngredients.php", data, function (response) {
                 last.text(response.newAmount);
 
             });
         });
     });
-    
+
 
     //update potions and ingredinents amount
     var addPotionsBtn = $("#addPotionsBtn");
-    addPotionsBtn.click(function(){
+    addPotionsBtn.click(function () {
         let potionAmount = $("#potionAmount").val();
         let potionName = $("#potionName2").val();
-        
+
         data = {
             name: potionName,
             amount: potionAmount,
         }
 
-        $.post("../potions/updatePotion.php", data, function(response){
-            alert("You have successfully added "+ response.amount +" new potion/s!");
-        }).fail(function(res){
+        $.post("../potions/updatePotion.php", data, function (response) {
+            alert("You have successfully added " + response.amount + " new potion/s!");
+        }).fail(function (res) {
             alert("Something went wrong!");
         });
 
 
-        
+
 
     })
-    
+
     //toggle form
     var form = $("#recipeForm");
     form.hide();
@@ -119,5 +119,33 @@ $(document).ready(function () {
         amountDiv.remove();
     });
 
+    //adding new instructions
+
+    var instructionWrapper = $("#instructionsWrapper");
+    var addInstructionBtn = $("#addInstructionBtn");
+    addInstructionBtn.click(function () {
+        let divInstruction = $("<div></div>");
+        divInstruction.addClass("form-group");
+        divInstruction.attr("id", "instructionDiv");
+
+        let labelInstruction = $("<label></label>");
+        labelInstruction.text("Enter an instruction for making this potion:");
+        labelInstruction.attr("id", "instructionInput");
+        let instructionInput = $("<textarea></textarea>");
+        instructionInput.addClass("form-control");
+        instructionInput.attr("id", "instructionInput");
+        instructionInput.attr("name", "instructionInput[]");
+        divInstruction.append(labelInstruction);
+        divInstruction.append(instructionInput);
+
+        instructionWrapper.append(divInstruction);
+    });
+
+    //removing last instruction added
+    var removeInstruction = $("#removeInstructionBtn");
+    removeInstruction.click(function () {
+        let instructionDiv = instructionWrapper.find("#instructionDiv:last");
+        instructionDiv.remove();
+    });
 
 });
