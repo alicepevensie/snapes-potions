@@ -111,6 +111,7 @@ else
                   <li class="list-group-item"><?= $potion->getDescription() ?></li>
                   <li class="list-group-item"><?= $potion->getEffect() ?></li>
                   <li class="list-group-item"><?= ucfirst($potion->getCategory()) ?></li>
+                  <li class="list-group-item">Amount in storage: <?=$potion->getAmount()?></li>
                 </ul>
               </div>
               <div class="card-footer">

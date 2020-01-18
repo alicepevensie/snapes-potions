@@ -146,4 +146,12 @@ class IngredientRepository
 
         return $ingredients;
     }
+
+    /**
+     * Get the value of db
+     */ 
+    public function getDb()
+    {
+        return $this->db;
+    }
 }

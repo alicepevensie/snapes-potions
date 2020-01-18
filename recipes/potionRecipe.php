@@ -39,6 +39,7 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
     $instructions = $recipeRep->getInstructionsForPotion($potionName);
     $showRecipe = true;
 }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -133,6 +134,7 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
                                 <tr>
                                     <th colspan="2"> <span>How many bottles of this potion would you like to make?</span>
                                         <input id="potionAmount" type="number" min="1" step="1">
+                                        <input type="hidden" id="potionName2" value="<?=$potionName?>">
                                         <?php if ($user->getId() === 2) : ?>
                                             <button class="btn" id="addPotionsBtn">Store created potions</button>
                                         <?php endif; ?>

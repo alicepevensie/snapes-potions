@@ -49,7 +49,7 @@ class PotionRepository
         }
         $potionsForAutocomplete = [];
         while ($row = $result->fetch_assoc()) {
-            
+
             $potionsForAutocomplete[] = $row['name'];
         }
         return $potionsForAutocomplete;
@@ -168,15 +168,28 @@ class PotionRepository
             die($this->db->error);
         }
     }
-    public function updateAmount($potionName, $amount)
+    public function getPotion($potionName)
     {
-        $amount = $this->db->real_escape_string($amount);
         $potionName = $this->db->real_escape_string($potionName);
-        $sql = "UPDATE potions SET `amount` = $amount WHERE `name` = {$potionName}";
+
+        $sql = "SELECT * FROM potions WHERE `name`='$potionName'";
         $result = $this->db->query($sql);
         if ($result === FALSE) {
             die($this->db->error);
         }
+        $row = $result->fetch_row();
+        $potion = new Potion($row[0], $row[1], $row[2], $row[3], $row[4], $row[5]);
+        return $potion;
+    }
+    public function updateAmount($potion, $amount)
+    {   
+        $potion->setName($this->db->real_escape_string($potion->getName()));
+        $amount = intval($this->db->real_escape_string($amount)) + intval($this->db->real_escape_string($potion->getAmount()));
         
+        $sql = "UPDATE potions SET `amount` = $amount WHERE `name` = '{$potion->getName()}'";
+        $result = $this->db->query($sql);
+        if ($result === FALSE) {
+            die($this->db->error);
+        }
     }
 }

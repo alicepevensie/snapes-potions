@@ -5,30 +5,45 @@ $(document).ready(function () {
     calculateIngredients.click(function () {
         let potionAmount = $("#potionAmount").val();
         rows.each(function () {
+            let ingName = $(this).find("td:eq(0)").text();
             let ingAmount = $(this).find("td:eq(1)").text();
             let ingAmountCalc = ingAmount * potionAmount;
-            $(this).find("td:last").text(ingAmountCalc);
+            data = {
+                ingName : ingName,
+                ingAmountCalc : ingAmountCalc,
+            }
+            let last = $(this).find("td:last");
+            $.post("../ingredients/checkIngredients.php", data, function(response){
+                last.text(response.newAmount);
+
+            });
         });
     });
+    
 
+    //update potions and ingredinents amount
     var addPotionsBtn = $("#addPotionsBtn");
     addPotionsBtn.click(function(){
         let potionAmount = $("#potionAmount").val();
-        let potionName = $("#potionName").val();
+        let potionName = $("#potionName2").val();
         
         data = {
             name: potionName,
             amount: potionAmount,
         }
 
-        $.post("./potions/updatePotion.php", data, function(response){
-            alert("You have successfully added "+response.amount+" new potion/s!");
-        }).fail(res){
+        $.post("../potions/updatePotion.php", data, function(response){
+            alert("You have successfully added "+ response.amount +" new potion/s!");
+        }).fail(function(res){
             alert("Something went wrong!");
-        };
+        });
+
+
+        
 
     })
-
+    
+    //toggle form
     var form = $("#recipeForm");
     form.hide();
     $("#addRecipeBtn").click(function () {

@@ -6,21 +6,29 @@ if ($_SERVER['REQUEST_METHOD'] !== "POST") {
 }
 require_once "../database.php";
 require_once "./potion_repository.php";
+require_once "../ingredients/ingredient_repository.php";
+require_once "../ingredients/ingredientValidator.php";
+require_once "../ingredients/changeIngredientService.php";
 
-if(!isset($_POST['name']) || !isset($_POST['amount'])){
+$array = $_POST;
+
+if(!isset($array['name']) || !isset($array['amount'])){
     http_response_code(422);
     die();
 }
 $potionRep = new PotionRepository($dbConnection);
+$ingredientRep = new IngredientRepository($dbConnection);
+$validator = new IngredientValidator($ingredientRep);
+$service = new ChangeIngredientService($ingredientRep, $validator);
 
-if(!$potionRep->potionExists($_POST['name'])){
+$canBeDone = $service->removeFromStock($array['name'], $array['amount']);
+if($canBeDone === false){
     http_response_code(422);
     die();
 }
-if($_POST['amount']<=0){
-    http_response_code(422);
-    die();
-}
 
-$potionRep->updateAmount($_POST['name'], $_POST['amount']);
-echo json_encode(['amount'=> $_POST['amount']]);
+$potion = $potionRep->getPotion($array['name']);
+$potionRep->updateAmount($potion, $array['amount']);
+$amount = $array['amount'];
+header("Content-Type: application/json");
+echo json_encode(['amount'=> $amount]);
