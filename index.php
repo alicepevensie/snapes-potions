@@ -80,7 +80,7 @@ $user = $userRep->selectUser($_SESSION['loggedIn']);
       <div class="row">
         <div class="col-12">
           <div class="ui-widget text-center mt-5" style="text-align:center">
-            <input type='text' id="potionSearch" class="form-control text-center" placeholder="Enter name of a potion you're looking for"><br>
+            <input autocomplete="off" type='text' id="potionSearch" class="form-control text-center" placeholder="Enter name of a potion you're looking for"><br>
             <div id="suggesstion-box"></div>
             <button class="btn btn-success mt-1" id="searchPotion" type="button">
               <i class="fa fa-search">Search</i>
@@ -98,28 +98,19 @@ $user = $userRep->selectUser($_SESSION['loggedIn']);
   <script type="text/javascript">
     $(document).ready(function() {
 
-      /*$("#potionSearch").keyup(function() {
+      var potions;
+      $("#potionSearch").keyup(function() {
         $.ajax({
           type: "POST",
           url: "potions/autocompleteSearch.php",
-          data: 'keyword=' + $(this).val(),
+          data: {keyword: $(this).val() },
           success: function(response) {
-            console.log(response);
             potions = response;
+            $("#potionSearch").autocomplete({source: potions});
           }
         });
       }); 
-      $("#potionSearch").autocomplete({
-        source: function() {
-          $.ajax({
-            type: "POST",
-            url: "potions/autocompleteSearch.php",
-            data: 'keyword=' + $(this).val(),
-            success: function(response) {}
-          });
-        }
-      });
-*/
+
       var saveBtn = $('#searchPotion');
       saveBtn.click(function() {
         inputval = $('#potionSearch').val();

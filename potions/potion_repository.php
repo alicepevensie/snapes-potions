@@ -49,8 +49,8 @@ class PotionRepository
         }
         $potionsForAutocomplete = [];
         while ($row = $result->fetch_assoc()) {
-
-            $potionsForAutocomplete[] = $row['name'];
+            $name = $row['name'];
+            $potionsForAutocomplete[] = $name;
         }
         return $potionsForAutocomplete;
     }
