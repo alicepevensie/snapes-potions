@@ -40,6 +40,10 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
     $showRecipe = true;
 }
 
+if (isset($_SESSION['feedback'])) {
+    $storeFeedback = $_SESSION['feedback'];
+    unset($_SESSION['feedback']);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -101,25 +105,58 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
                 <div class="row">
                     <div class="col-12">
                         <form id="recipeForm" action="storeRecipe.php" method="POST">
+                            <?php if (isset($storeFeedback['recipeExists'])) : ?>
+                                <div class="alert alert-danger mt-2"><?= $storeFeedback ?></div>
+                            <?php endif; ?>
                             <div class="form-group">
                                 <label for="potionName">Potion name</label>
                                 <input type="text" readonly class="form-control-plaintext" id="potionName" name="potionName" value="<?= $potionName ?>">
                             </div>
-                            <div id="wrapper">
+                            <div id="bigWrapper">
+                                <div id="wrapper">
+                                    <?php if (isset($storeFeedback['addOne'])) { ?>
+                                        <div class="alert alert-danger" role="alert"><?= $storeFeedback['addOne'] ?></div>
+                                    <?php } else { ?>
+                                        <?php if (isset($storeFeedback['missmatch'])) : ?>
+                                            <div class="alert alert-danger"><?= $storeFeedback['missmatch'] ?></div>
+                                        <?php endif; ?>
+                                        <?php if (isset($storeFeedback['nonExistentIngredient'])) : ?>
+                                            <div class="alert alert-danger"><?= $storeFeedback['nonExistentIngredient'] ?></div>
+                                        <?php endif; ?>
+                                        <?php if (isset($storeFeedback['amountError'])) : ?>
+                                            <div class="alert alert-danger"><?= $storeFeedback['amountError'] ?></div>
+                                        <?php endif; ?>
 
+                                    <?php } ?>
+                                </div>
+                                <div class="control-btns">
+                                    <button type="button" class="btn btn-info btn-sm" id="addIngredientBtn">Add ingredient</button>
+                                    <button type="button" class="btn btn-danger btn-sm" id="removeIngredientBtn">Remove last ingredient</button>
+                                </div>
                             </div>
-                            <div class="control-btns">
-                                <button type="button" class="btn btn-info btn-sm" id="addIngredientBtn">Add ingredient</button>
-                                <button type="button" class="btn btn-danger btn-sm" id="removeIngredientBtn">Remove last ingredient</button>
+                            <hr>
+                            <div id="togglers" class="mt-2">
+                                <button type="button" class="btn btn-sm btn-info" id="toggleInstructionsBtn">Show/hide instructions</button>
+                                <button type="button" class="btn btn-sm btn-info" id="toggleIngredientsBtn">Show/hide ingredients</button>
                             </div>
+                            <hr>
+                            <div id="instructionsSection">
+                                <div id="instructionsWrapper">
+                                <?php if (isset($storeFeedback['addOnePls'])) { ?>
+                                        <div class="alert alert-danger" role="alert"><?= $storeFeedback['addOnePls'] ?></div>
+                                    <?php } else { ?>
+                                        <?php if (isset($storeFeedback['instructionLength'])) : ?>
+                                            <div class="alert alert-danger"><?= $storeFeedback['instructionLength'] ?></div>
+                                        <?php endif; ?>
+                                    <?php } ?>
 
-                            <div id="instructionsWrapper">
+                                </div>
+                                <div id="instructions-control-btns" class="mt-2">
+                                    <button type="button" class="btn btn-info btn-sm" id="addInstructionBtn">Add instruction</button>
+                                    <button type="button" class="btn btn-danger btn-sm" id="removeInstructionBtn">Remove last instruction</button>
+                                </div>
+                                <hr>
 
-
-                            </div>
-                            <div id="instructions-control-btns" class="mt-2">
-                                <button type="button" class="btn btn-info btn-sm" id="addInstructionBtn">Add instruction</button>
-                                <button type="button" class="btn btn-danger btn-sm" id="removeInstructionBtn">Remove last instruction</button>
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-success btn-sm mt-2">Save recipe</button>
@@ -140,18 +177,22 @@ if ($recipeRep->recipeExists($potionName) && $recipeRep->instructionsExists($pot
                 <div class="col-12">
                     <div class="table-responsive">
                         <table class="table table-striped table-sm table-hover" id="ingredientTable">
-
+                            <?php if (isset($storeFeedback['success'])) : ?>
+                                <div class="alert alert-success"><?= $storeFeedback['success'] ?></div>
+                            <?php endif; ?>
                             <thead>
                                 <tr>
-                                    <th colspan="2"> <span>How many bottles of this potion would you like to make?</span>
-                                        <input id="potionAmount" type="number" min="1" step="1">
-                                        <input type="hidden" id="potionName2" value="<?= $potionName ?>">
-                                        <?php if ($user->getId() === 2) : ?>
-                                            <button class="btn" id="addPotionsBtn">Store created potions</button>
-                                        <?php endif; ?>
+                                    <th colspan="2">
+                                        <div class="form-inline"> <span>How many bottles of this potion would you like to make?</span>
+                                            <div class="form-group mx-sm-3"><input class="form-control form-control-sm" id="potionAmount" type="number" min="1" step="1" value="1"></div>
+                                            <input type="hidden" id="potionName2" value="<?= $potionName ?>">
+                                            <?php if ($user->getId() === 2) : ?>
+                                                <button class="btn btn-sm btn-success" id="addPotionsBtn">Store created potions</button>
+                                            <?php endif; ?>
+                                        </div>
                                     </th>
                                     <th>
-                                        <button class="btn" id="calculateIngredients">Calculate needed amount</button>
+                                        <button class="btn btn-sm btn-secondary" id="calculateIngredients">Calculate needed amount</button>
                                     </th>
                                 </tr>
                                 <tr>

@@ -103,4 +103,12 @@ class RecipeRepository
             die($this->db->error);
         }
     }
+
+    /**
+     * Get the value of db
+     */ 
+    public function getDb()
+    {
+        return $this->db;
+    }
 }

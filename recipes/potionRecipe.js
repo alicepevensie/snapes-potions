@@ -148,4 +148,17 @@ $(document).ready(function () {
         instructionDiv.remove();
     });
 
+    //show and hide instructions/ingredients
+    var toggleIngredients = $("#toggleIngredientsBtn");
+    var toggleInstructions = $("#toggleInstructionsBtn");
+    var instructionsPart = $("#instructionsSection");
+    var wrapper = $("#bigWrapper");
+    instructionsPart.hide();
+    toggleIngredients.click(function () {
+        wrapper.toggle();
+    });
+    toggleInstructions.click(function () {
+        instructionsPart.toggle();
+    })
+
 });
